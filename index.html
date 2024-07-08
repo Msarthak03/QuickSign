@@ -7,24 +7,31 @@
     <style>
         .main{
             position: absolute;
-             top: 50%;
+            top: 50%;
             left: 50%;
             transform: translate(-50% ,-50%);
         }
         .canvas{
             border: 2px solid black;
+            align-self: center;
+            margin-left: 10%;
         }
         .top ,.bottom{
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-between ;
             margin: 20px 0 20px 0;
+            size: 30px;
+
+            
 
         }
-        .block,input ,button,select {
-            width:  80px;
+        .block, input , button, select {
+            width:  80%;
+            
+            
         }
-        top>.block{
+        .top>block{
             margin: 10px;
         }
         .bottom>button{
@@ -79,6 +86,8 @@
         const retriveButton = document.getElementById("retriveButton");
         const fontSize = document.getElementById("fontSize");   
         const ctx = canvas.getContext("2d");
+        
+
 
         colorPicker.addEventListener('change',(e)=>{
             ctx.fillStyle = e.target.value;
@@ -102,7 +111,7 @@
             }
           
         })
-        canvas.addEventListener('mouseup',(e)=>{
+        canvas.addEventListener('mouseup',()=>{
             isDrawing = false;
         })
         canvasColor.addEventListener('change',(e)=>{
@@ -112,6 +121,26 @@
         fontSize.addEventListener('change',(e)=>{
             ctx.lineWidth = e.target.value;
 
+        })
+        clearButton.addEventListener('click',() =>{
+            ctx.clearRect(0,0,800,500);
+        })
+        saveButton.addEventListener('click',()=>{
+            localStorage.setItem('canvasContents',canvas.toDataURL());
+            let link = document.createElement('a');
+            link.download='my-canvas.png';
+            link.href=canvas.toDataURL();
+            link.click();
+
+        })
+        retriveButton.addEventListener('click',()=>{
+            let saveCanvas = localStorage.getItem('canvasContents');
+
+            if(saveCanvas){
+                let img = new Image(); 
+                img.src= saveCanvas;
+                ctx.drawImage(img,0,0) 
+            }
         })
 
 
